@@ -1,0 +1,17 @@
+{
+  "name": "mci.js",
+  "version": "0.0.0",
+  "description": "branding brand's internal commerce index",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "mysql": "~2.0.0-rc2",
+    "express": "~3.4.7",
+    "path": "~0.4.9",
+    "passport": "~0.1.17"
+  }
+}
