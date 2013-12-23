@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>MCI - Mobile Commerce Daily</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Mobile Commerce Daily">
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+   </head>
+    
+  <body ng-app="ngMCI" >
+  
+    <header class="top">
+      <nav ng-class="navigation"></nav>
+    </header>
+
+    <article ng-view class="main"></article>
+
+    <script src="js/util/angular.min.js"></script>
+    <script src="js/util/angular-animate.min.js"></script>
+    <script src="js/util/angular-route.min.js"></script>
+    <script src="js/mci.js"></script>
+
+  </body>
+
+</html>
+
