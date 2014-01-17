@@ -1,0 +1,44 @@
+doctype html
+html(lang='en', ng-app="ngMCI")
+  head
+    meta(charset='utf-8')
+    meta(name="viewport", content="width=device-width", initial-scale="1.0", maximum-scale="1", user-scalable="no")
+    
+    title MCI - Mobile Commerce Daily
+    
+    link(href="css/main.css", rel="stylesheet")
+ 
+    script(type="text/javascript").
+      if (window.location.href.indexOf('#_=_') > 0) {
+        window.location = window.location.href.replace(/#.*/, '');
+      }
+
+  body(data-ng-cloak)
+    .nav(data-ng-controller="NavCtrl")
+      li(data-access-level='accessLevels.anon', active-nav)
+        a(href='/login') sign in
+      li(data-access-level='accessLevels.user', active-nav)
+        a(href='/') Home
+      li(data-access-level='accessLevels.user', active-nav)
+        a(href='/data') Data
+
+    main(ng-view)
+      p bing bong Hello.
+
+    script(src='/js/util/angular.js')
+    script(src='/js/util/angular-animate.js')
+    script(src='/js/util/angular-route.js')
+    script(src='/js/util/angular-cookies.js')
+    script(src='/js/routingConfig.js')
+    script(src='/js/mci.js')
+
+    script(type="text/ng-template", id="404")
+      include templ/404
+    script(type="text/ng-template", id="admin")
+      include templ/admin
+    script(type="text/ng-template", id="home")
+      include templ/home
+    script(type="text/ng-template", id="login")
+      include templ/login
+    script(type="text/ng-template", id="data")
+      include templ/data

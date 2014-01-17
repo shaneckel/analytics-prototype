@@ -1,34 +1,106 @@
-function setup(app) {
 
-  // app.get('/auth/google', handlers.auth.googleSignIn);
-  // app.get('/auth/google/callback', handlers.auth.googleSignInCallback);
+//mci.js / routes
 
-  // app.get('/api/user', handlers.user.getUsers);
-  // app.get('/api/user/:id', handlers.user.getUser);
+var _             = require('underscore'),
+    path          = require('path'),
+    passport      = require('passport'),
+    user          = require('./user.js'),
+    userRoles     = require('./public/js/routingConfig').userRoles,
+    accessLevels  = require('./public/js/routingConfig').accessLevels;
 
-
-  app.get('/api/listclients', function (req, res) {
-
-    query = 'SELECT clientID, clientName, isCommerce, isDefunct, mobile, tablet, desktop, iphoneApp, ipadApp, androidApp, hasMobilePVVRatio, hasTabletPVVRatio, hasAndroidAppPVVRatio, hasIphoneAppPVVRatio FROM availableClientProfiles ORDER BY clientName;';
-    app.connect.query(query , function (error, rows, fields) { 
-      res.writeHead(200, { 'Content-Type' : 'x-application/json' });
-      json = JSON.stringify({
-          fields : rows 
+var routes = [
+  {
+    path: '/templ/*',
+    httpMethod: 'GET',
+    middleware: [function (req, res) {
+      var requestedView = path.join('./', req.url);
+      res.render(requestedView);
+    }],
+    accessLevel: accessLevels.admin
+  },
+  {
+    path: '/auth/google',
+    httpMethod: 'GET',
+    middleware: [passport.authenticate('google')]
+  },
+  {
+    path: '/auth/google/return',
+    httpMethod: 'GET',
+    middleware: [passport.authenticate('google', {
+      successRedirect: '/',
+      failureRedirect: '/login'
+    })]
+  },
+  {
+    path: '/users',
+    httpMethod: 'GET',
+    middleware: [function(req, res) {
+        var users = User.findAll();
+        _.each(users, function(user) {
+            delete user.password;
+            delete user.twitter;
+            delete user.facebook;
+            delete user.google;
+            delete user.linkedin;
         });
-      app.connect.end();
-      res.end(json);
-    }); 
+        res.json(users);
+      }
+    ],
+    accessLevel: accessLevels.admin
+  },
+  {
+    path: '/*',
+    httpMethod: 'GET',
+    middleware: [function(req, res) {
+      var role = userRoles.public, username = '';
+      if(req.user) {
+        role = req.user.role;
+        username = req.user.username;
+      }
+      res.cookie('user', JSON.stringify({
+        'username': username,
+        'role': role
+      }));
+      res.render('index');
+    }]
+  }
+];
+
+module.exports = function(app) {
+  _.each(routes, function(route) {
+    
+    route.middleware.unshift(ensureAuthorized);
+    var args = _.flatten([route.path, route.middleware]);
+    if(route.httpMethod.toUpperCase() === 'GET'){
+       app.get.apply(app, args);
+    }
+
+    // switch(route.httpMethod.toUpperCase()) {
+    //   case 'GET':
+    //     app.get.apply(app, args);
+    //     break;
+    //   case 'POST':
+    //     app.post.apply(app, args);
+    //     break;
+    //   case 'PUT':
+    //     app.put.apply(app, args);
+    //     break;
+    //   case 'DELETE':
+    //     app.delete.apply(app, args);
+    //     break;
+    //   default:
+    //     throw new Error('Invalid HTTP method specified for route ' + route.path);
+    //     break;
+    // }
 
   });
+}
 
-  app.get('/', function (req, res){
-    res.writeHead(200,{'Content-Type' :'text/plain'});
-    str = 'index';
-    res.end(str);
-  })
-
-  console.log("\n| routes enabled");
-
-};
-
-exports.setup = setup;
+function ensureAuthorized(req, res, next) {
+  var role;
+  if(!req.user) role = userRoles.public;
+  else role = req.user.role;
+  var accessLevel = _.findWhere(routes, { path: req.route.path }).accessLevel || accessLevels.public;
+  if(!(accessLevel.bitMask & role.bitMask)) return res.send(403);
+  return next();
+}
