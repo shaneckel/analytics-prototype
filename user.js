@@ -37,7 +37,7 @@ module.exports = {
 
   findOrCreateOauthUser: function(provider, providerId) {
     var user = module.exports.findByProviderId(provider, providerId);
-     if(!user) {
+    if(!user) {
       user = {
         id: _.max(users, function(user) { return user.id; }).id + 1,
         username: provider + '_user', // Should keep Oauth users anonymous on demo site
@@ -66,76 +66,61 @@ module.exports = {
   findByProviderId: function(provider, id) {
     return _.find(users, function(user) { return user[provider] === id; });
   },
+  verifyUser: function(oUser){
+
+    var query = "SELECT id, sub, email, isActive, isBrander, firstName, lastName FROM users WHERE email = 'beans' LIMIT 1;";
+    //var query = "SELECT id, sub, email, isActive, isBrander, firstName, lastName FROM users WHERE email = '" + oUser + "' LIMIT 1;";
+    //var user;  
+
+    connect.query(query , function (error, rows) { 
+      if(error){
+        connect.end();
+        return error; 
+      } 
+      if(rows.length != 0){
+        console.log(rows[0].email);
+        return rows[0];   
+       }else{
+        return "failed"; 
+      }
+    });
+    return "weed";
+  },
 
   googleStrategy: function() {
 
     return new googleStrategy({
       returnURL: process.env.GOOGLE_RETURN_URL || "http://localhost:3000/auth/google/return",
-      realm: process.env.GOOGLE_REALM || "http://localhost:3000/"
+      realm: process.env.GOOGLE_REALM || ""
     },
     function(identifier, profile, done) {
 
-      console.log(profile.emails[0].value);
-      console.log("---- / selected email / ----\n"); 
+      console.log(profile.emails[0].value + "---- / selected email / ----\n");
 
-      //query = "SELECT id, sub, email, isActive, isBrander, firstName, lastName FROM users WHERE email = 'beans' LIMIT 1;";
-      query = "SELECT id, sub, email, isActive, isBrander, firstName, lastName FROM users WHERE email = '" + profile.emails[0].value + "' LIMIT 1;";
       
-      var valid = connect.query(query , function (error, rows, fields) { 
-        connect.end();
-        if(error){
-          console.log(error.code);
-          return false; 
-        } 
-        if(rows.length > 0){
-          console.log(rows.email);
-          return true; 
-        }
-      }); 
-  
-      console.log(valid);
+      //user = module.exports.userVerify(profile.emails[0].value);
+      
+      var user = module.exports.verifyUser(profile.emails[0].value)
+      
+      console.log(user);
 
-      var user = module.exports.findOrCreateOauthUser('google', identifier);
-      done(null, user);
-
-     // client.query(
-     //  'SELECT * FROM web_users WHERE username = "'+UserID+'" LIMIT 1',
-     //    function selectCb(err, results, fields) {
-     //      if (err) {
-     //        throw err;
-     //      }
-     //      // Found match, hash password and check against DB
-     //      if (results.length != 0)
-     //      {
-     //          // Passwords match, authenticate.
-     //          if (hex_md5(data.query['password']) == results[0]['password'])
-     //          {
-     //              data.query['ishost'] = true;
-     //              accept(null, true);
-     //          }
-     //          // Passwords don't match, do not authenticate
-     //          else
-     //          {
-     //              data.query['ishost'] = false;
-     //              return accept("Invalid Password", false);
-     //          }
-     //      }
-     //      // No match found, add to DB then authenticate
-     //      else
-     //      {
-     //          client.query(
-     //              'INSERT INTO web_users (username, password) VALUES ("'+UserID+'", "'+hex_md5(data.query['password'])+'")', null);
-
-     //          data.query['ishost'] = "1";
-     //          accept(null, true);
-     //      }
-
-     //      client.end();
-     //    }
-     //  );
-
+      done(null, false, { message: "I'm sorry but "+ profile.emails[0].value +" isn't on the list." });
 
     });
+
+
+// var user = module.exports.findByUsername(username);
+
+//   if(!user) {
+//       done(null, false, { message: 'Incorrect username.' });
+//   }
+//   else if(user.password != password) {
+//       done(null, false, { message: 'Incorrect username.' });
+//   }
+//   else {
+//       return done(null, user);
+//   }
+
 
   },
 
@@ -150,3 +135,17 @@ module.exports = {
     else        { done(null, false); }
   }
 };
+
+
+
+  // // oauth2 strat
+  //   return new GoogleStrategy({
+  //     consumerKey: "967956446955.apps.googleusercontent.com",
+  //     consumerSecret: "RdxTw7y-_SUyzaIefNJXQlRO",
+  //     callbackURL: "http://localhost:3000/"
+
+  //   },
+  //   function(token, tokenSecret, profile, done) {
+  //     return done(e)
+  //   }
+  // );

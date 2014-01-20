@@ -14,6 +14,9 @@ html(lang='en', ng-app="ngMCI")
       }
 
   body(data-ng-cloak)
+    
+    h1 #{message}
+
     .nav(data-ng-controller="NavCtrl")
       li(data-access-level='accessLevels.anon', active-nav)
         a(href='/login') sign in

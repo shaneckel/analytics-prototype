@@ -4,6 +4,7 @@
 var _             = require('underscore'),
     path          = require('path'),
     passport      = require('passport'),
+    flash         = require('connect-flash'),
     user          = require('./user.js'),
     userRoles     = require('./public/js/routingConfig').userRoles,
     accessLevels  = require('./public/js/routingConfig').accessLevels;
@@ -28,13 +29,15 @@ var routes = [
     httpMethod: 'GET',
     middleware: [passport.authenticate('google', {
       successRedirect: '/',
-      failureRedirect: '/login'
+      failureRedirect: '/login',
+      failureFlash: true
     })]
   },
   {
     path: '/users',
     httpMethod: 'GET',
-    middleware: [function(req, res) {
+    middleware: [
+      function(req, res) {
         var users = User.findAll();
         _.each(users, function(user) {
             delete user.password;
@@ -61,7 +64,7 @@ var routes = [
         'username': username,
         'role': role
       }));
-      res.render('index');
+      res.render('index', { message: req.flash('error') });
     }]
   }
 ];

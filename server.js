@@ -3,6 +3,7 @@
 
 var express       = require('express'),
     passport      = require('passport'),
+    flash         = require('connect-flash'),
     path          = require('path'),
     routes        = require('./routes'),
     user          = require('./user.js');
@@ -29,6 +30,8 @@ app.configure(function () {
     });
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.enable("jsonp callback");
+    app.use(flash()); // use connect-flash for flash messages stored in session
+
   });
 
 app.use(passport.initialize());
