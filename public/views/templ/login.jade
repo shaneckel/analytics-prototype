@@ -1,5 +1,29 @@
-h1 welcome
-p
-  a.btn.btn-default(href="", data-ng-click="loginOauth('google')")
-    i.fa.fa-google-plus-square
-    |  Google
+article.login
+  
+  section.welcome
+    h1 MCI
+    h3 Branding Brand's Mobile Commerce Index 
+    
+    aside.loginBox
+      if (message.length)
+        aside
+          h2.err #{message}
+      else
+        a(href="", data-ng-click="loginOauth('google')")
+          img.googleIcon(src="img/google_plus.svg")
+          span Sign in using Google
+  
+  footer
+    div.social 
+      a(href="http://twitter.com/brandingbrand") twitter
+      a(href="http://facebook.com/brandingbrand") facebook
+    div.about
+      h1 about
+      p Branding Brand powers mobile commerce sites and apps for over 200 of the world's leading retailers, including American Eagle Outfitters, Crate & Barrel, Ralph Lauren, and Sephora. Our transformative technology is proven, reliable, and limitless.
+    div.contact
+      h1 contact 
+      p 2313 E. Carson Street
+      p Pittsburgh, PA 15203
+      p 412.567.4903
+
+  aside.copy Copyright © 2014 Branding Brand

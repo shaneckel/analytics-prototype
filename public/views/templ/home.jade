@@ -1,1 +1,4 @@
-h1 home
+article.base(class="{{loadStatus}}")
+  h1 Client List 
+  div(ng-repeat="data in datapass")
+    p {{data.clientID}} - {{data.clientName}} 

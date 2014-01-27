@@ -5,43 +5,44 @@ html(lang='en', ng-app="ngMCI")
     meta(name="viewport", content="width=device-width", initial-scale="1.0", maximum-scale="1", user-scalable="no")
     
     title MCI - Mobile Commerce Daily
-    
+
+    link(href='http://fonts.googleapis.com/css?family=Roboto:400,300,400italic,300italic,700,700italic',rel='stylesheet', type='text/css')
     link(href="css/main.css", rel="stylesheet")
- 
+
     script(type="text/javascript").
-      if (window.location.href.indexOf('#_=_') > 0) {
-        window.location = window.location.href.replace(/#.*/, '');
-      }
+      if (window.location.href.indexOf('#_=_') > 0) {window.location = window.location.href.replace(/#.*/, '');}
 
   body(data-ng-cloak)
     
-    h1 #{message}
+    div.load(class="{{loadStatus}}")
 
-    .nav(data-ng-controller="NavCtrl")
-      li(data-access-level='accessLevels.anon', active-nav)
-        a(href='/login') sign in
-      li(data-access-level='accessLevels.user', active-nav)
-        a(href='/') Home
-      li(data-access-level='accessLevels.user', active-nav)
-        a(href='/data') Data
+    main
+      nav.main-nav(data-ng-controller="NavCtrl", data-access-level='accessLevels.user')
+        div.fixed
+          h1 MCI
+          li(data-access-level='accessLevels.user', active-nav)
+            a(href='/') Client List
+          li(data-access-level='accessLevels.user', active-nav)
+            a(href='/data') Data
+          li.logout(data-access-level='accessLevels.user', active-nav)
+            h2(ng-if="user.username") Welcome {{user.username}}
+            h3(ng-if="user.email") {{user.email}}
+            a(data-ng-click="logout()") Logout 
 
-    main(ng-view)
-      p bing bong Hello.
+      section.content(ng-view )
+    
 
     script(src='/js/util/angular.js')
-    script(src='/js/util/angular-animate.js')
     script(src='/js/util/angular-route.js')
     script(src='/js/util/angular-cookies.js')
     script(src='/js/routingConfig.js')
     script(src='/js/mci.js')
 
     script(type="text/ng-template", id="404")
-      include templ/404
-    script(type="text/ng-template", id="admin")
-      include templ/admin
-    script(type="text/ng-template", id="home")
-      include templ/home
+      include templ/404    
     script(type="text/ng-template", id="login")
       include templ/login
+    script(type="text/ng-template", id="home")
+      include templ/home
     script(type="text/ng-template", id="data")
       include templ/data

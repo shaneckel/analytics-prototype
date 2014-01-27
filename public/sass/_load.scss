@@ -1,0 +1,17 @@
+.load{
+  position: fixed; 
+  width: 100%; 
+  display: block;
+  background: $red; 
+  height: .3em;  
+  z-index: 9;
+  
+  &.complete{
+    @include transition(background .4s ease-in); 
+    background: black;
+  }
+  &.working{
+    @include transition(background .1s ease-in); 
+    background: $red; 
+  }
+}
