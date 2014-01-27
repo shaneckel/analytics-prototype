@@ -62,7 +62,7 @@ var routes = [
     middleware: [function (req, res) {
       req.logout();
       res.clearCookie('user');
-      console.log(" --- user logged out");
+      console.log("!--- user logged out");
       res.render('index', { message: req.flash('logged out') });
     }]
   },
@@ -74,7 +74,6 @@ var routes = [
     middleware: [function(req, res) {
       var role = userRoles.public, username = '', email = '';
       if(req.user) {
-        console.log("--- user " + req.user.username + " is valid." );
         role = req.user.role;
         username = req.user.username;
         email = req.user.email;

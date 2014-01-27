@@ -45,16 +45,18 @@ module.exports = {
   googleStrategy: function() {
     return new googleStrategy({
       returnURL: process.env.GOOGLE_RETURN_URL || "http://localhost:3000/auth/google/return",
-      realm: process.env.GOOGLE_REALM || ""
+      realm: process.env.GOOGLE_REALM || "http://localhost:3000/",
+      stateless: true
     },
     function(identifier, profile, done) {
       var dbCheck = db.validateUser(profile.emails[0].value, function(rows){
         if(rows.length < 1){
           console.log("--- failed auth");
           done(null, false, { 
-            message: "I'm sorry but "+ profile.emails[0].value + " isn't on the list." 
+            message: "I'm sorry but "+ profile.emails[0].value  + " isn't on the list." 
           });
         }else{
+          console.log("--- user " + profile.emails[0].value + " is valid");
           var user = module.exports.findOrCreateOauthUser('google', identifier, rows);
           done(null, user);
         }
