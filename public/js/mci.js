@@ -51,9 +51,6 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
       $rootScope.loadStatus = "working";
       $rootScope.error = null;
  
-      console.log(Auth.isLoggedIn());
-      console.log(next.access);
- 
       if (!Auth.authorize(next.access, undefined)) {
         if(Auth.isLoggedIn()) $location.path('/');
         else $location.path('/welcome');
