@@ -50,6 +50,10 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
       $rootScope.loadStatus = "working";
       $rootScope.error = null;
+ 
+      console.log(Auth.isLoggedIn());
+      console.log(next.access);
+ 
       if (!Auth.authorize(next.access, undefined)) {
         if(Auth.isLoggedIn()) $location.path('/');
         else $location.path('/welcome');
@@ -154,15 +158,7 @@ angular.module('ngMCI')
     };
   })
 
-  .factory('Users', function($http) {
-    return {
-      getAll: function(success, error) {
-        $http.get('/users').success(success).error(error);
-      }
-    }
-  });
-
-
+  
 //Controller
 angular.module('ngMCI')
   .controller('NavCtrl', ['$rootScope', '$scope', '$location','$window', 'Auth', function($rootScope, $scope, $location, $window, Auth) {
@@ -182,6 +178,7 @@ angular.module('ngMCI')
 
   .controller('LoginCtrl', ['$rootScope', '$scope', '$location', '$window', 'Auth', function($rootScope, $scope, $location, $window, Auth) {
     $rootScope.loadStatus = "complete";
+    if(Auth.isLoggedIn()) $location.path('/');
 
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
