@@ -7,7 +7,7 @@ article.login
     aside.loginBox
       if (message.length)
         aside
-          h2.err #{message}
+          h2.error #{message}
       else
         a(href="", data-ng-click="loginOauth('google')")
           img.googleIcon(src="img/google_plus.svg")
