@@ -20,10 +20,19 @@ html(lang='en', ng-app="ngMCI")
       nav.main-nav(data-ng-controller="NavCtrl", data-access-level='accessLevels.user')
         div.fixed
           h1 MCI
+
+          //Grow this out of a loop. 
           li(data-access-level='accessLevels.user', active-nav)
-            a(href='/') Client List
+            a(href='/') Current Index
           li(data-access-level='accessLevels.user', active-nav)
-            a(href='/data') Data
+            a(href='/node') Node
+          li(data-access-level='accessLevels.user', active-nav)
+            a(href='/device') Device
+          li(data-access-level='accessLevels.user', active-nav)
+            a(href='/android') Android
+          li(data-access-level='accessLevels.user', active-nav)
+            a(href='/ios') Ios
+
           li.logout(data-access-level='accessLevels.user', active-nav)
             h2(ng-if="user.username") Welcome {{user.username}}
             h3(ng-if="user.email") {{user.email}}
@@ -38,11 +47,18 @@ html(lang='en', ng-app="ngMCI")
     script(src='/js/routingConfig.js')
     script(src='/js/mci.js')
 
+    //templ
     script(type="text/ng-template", id="404")
       include templ/404    
     script(type="text/ng-template", id="login")
       include templ/login
     script(type="text/ng-template", id="home")
       include templ/home
-    script(type="text/ng-template", id="data")
-      include templ/data
+    script(type="text/ng-template", id="android")
+      include templ/android
+    script(type="text/ng-template", id="node")
+      include templ/node
+    script(type="text/ng-template", id="ios")
+      include templ/ios    
+    script(type="text/ng-template", id="device")
+      include templ/device

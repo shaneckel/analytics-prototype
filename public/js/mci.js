@@ -5,10 +5,39 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
   .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
 
+    // page specifics
     $routeProvider.when('/', {
         templateUrl: 'templ/home',
         controller: 'HomeCtrl',
         access: access.user
+      });
+    $routeProvider.when('/node', {
+        templateUrl: 'templ/node',
+        controller: 'DefaultCtrl',
+        access: access.user
+      });    
+    $routeProvider.when('/android', {
+        templateUrl: 'templ/android',
+        controller: 'DefaultCtrl',
+        access: access.user
+      });
+    $routeProvider.when('/ios', {
+        templateUrl: 'templ/ios',
+        controller: 'DefaultCtrl',
+        access: access.user
+      });
+    $routeProvider.when('/device', {
+        templateUrl: 'templ/device',
+        controller: 'DefaultCtrl',
+        access: access.user
+      });
+
+
+    // app constants
+    $routeProvider.when('/404', {
+        templateUrl: '404',
+        controller: 'DefaultCtrl',
+        access: access.public
       });
 
     $routeProvider.when('/welcome', {
@@ -16,22 +45,10 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
         controller: 'LoginCtrl',
         access: access.public
       });
+    $routeProvider.otherwise({redirectTo:'/404'}); 
 
-    $routeProvider.when('/data', {
-        templateUrl: 'templ/data',
-        controller: 'DefaultCtrl',
-        access: access.user
-      });
-
-    $routeProvider.when('/404', {
-        templateUrl: '404',
-        controller: 'DefaultCtrl',
-        access: access.public
-      });
-
-    $routeProvider.otherwise({redirectTo:'/404'});
+    //init
     $locationProvider.html5Mode(true);
-
     $httpProvider.interceptors.push(function($q, $location) {
       return {
         'responseError': function(response) {
@@ -46,11 +63,11 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
     });
   }])
 
+  //on route change validity
   .run(['$rootScope', '$location', '$http', 'Auth', function ($rootScope, $location, $http, Auth) {  
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
       $rootScope.loadStatus = "working";
       $rootScope.error = null;
- 
       if (!Auth.authorize(next.access, undefined)) {
         if(Auth.isLoggedIn()) $location.path('/');
         else $location.path('/welcome');
@@ -93,7 +110,6 @@ angular.module('ngMCI')
       }
     };
   }])
-
   .directive('activeNav', ['$location', function($location) {
     return {
       restrict: 'A',
@@ -101,7 +117,10 @@ angular.module('ngMCI')
         var nestedA = element.find('a')[0];
         var path = nestedA.href;
         scope.location = $location;
+
         scope.$watch('location.absUrl()', function(newPath) {
+          console.log(newPath);
+          console.log("! - " + path);
           if (path === newPath || path === newPath + '/' || path + '/' === newPath) {
             element.addClass('active');
           } else {
@@ -162,7 +181,6 @@ angular.module('ngMCI')
     $scope.user = Auth.user;
     $scope.userRoles = Auth.userRoles;
     $scope.accessLevels = Auth.accessLevels;
-
     $scope.logout = function() {
       Auth.logout(function() {
        $window.location.href ='/welcome';
@@ -170,9 +188,8 @@ angular.module('ngMCI')
         $rootScope.error = "Failed to logout";
       });
     };
-
   }])
-
+  
   .controller('LoginCtrl', ['$rootScope', '$scope', '$location', '$window', 'Auth', function($rootScope, $scope, $location, $window, Auth) {
     $rootScope.loadStatus = "complete";
     if(Auth.isLoggedIn()) $location.path('/');
@@ -181,7 +198,7 @@ angular.module('ngMCI')
       $window.location.href = '/auth/' + provider;
     };
   }])
- 
+
   .controller('HomeCtrl', ['$rootScope', '$scope', '$http',
     function($rootScope, $scope, $http) {
       $rootScope.loadStatus = "working";
@@ -190,7 +207,7 @@ angular.module('ngMCI')
         $rootScope.loadStatus = "complete";
        })
     }])  
- 
-  .controller('DefaultCtrl',['$rootScope', function($rootScope) {
+
+  .controller('DefaultCtrl',['$rootScope','$scope', function($rootScope, $scope) {
     $rootScope.loadStatus = "complete";
   }]);
