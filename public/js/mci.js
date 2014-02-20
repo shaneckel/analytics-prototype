@@ -129,6 +129,24 @@ angular.module('ngMCI')
         });
       }
     };
+  }])
+  
+  .directive('generatePdf', ['$location', '$http', function($location,$http) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.on('click',function() {
+          $http.post('generate/pdf',  scope.datapass, {responseType: 'blob'}).success(function(data) { //create pdf
+            var blob = new Blob([data], {type: 'application/pdf'})
+              , url = URL.createObjectURL(blob)
+              , pom = document.createElement('a')
+            pom.setAttribute('href', url);
+            pom.setAttribute('download', 'out.pdf');
+            pom.click(); 
+          });
+        });
+      }
+    };
   }]);
 
 
@@ -210,4 +228,11 @@ angular.module('ngMCI')
 
   .controller('DefaultCtrl',['$rootScope','$scope', function($rootScope, $scope) {
     $rootScope.loadStatus = "complete";
+  }])
+  
+  .controller('Pdf',['$rootScope', '$scope', function($rootScope, $scope) {
+    $scope.generatePDF = function() {
+      console.log('here')
+    }
   }]);
+  
