@@ -1,4 +1,11 @@
 article.base(class="{{loadStatus}}")
+  div.pdf(data-access-level='accessLevels.user', active-nav)
+    a(href='#' generate-pdf) Export to PDF
+  form(ng-submit="generatePDF()" ng-controller="Pdf")
+    input(type='submit' value='PDF')
+    
   h1 Client List 
   div(ng-repeat="data in datapass")
     p {{data.clientID}} - {{data.clientName}} 
+
+    

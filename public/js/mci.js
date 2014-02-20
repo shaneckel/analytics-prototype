@@ -16,6 +16,7 @@ var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
         controller: 'LoginCtrl',
         access: access.public
       });
+      
 
     $routeProvider.when('/data', {
         templateUrl: 'templ/data',
@@ -110,6 +111,26 @@ angular.module('ngMCI')
         });
       }
     };
+  }])
+  
+  .directive('generatePdf', ['$location', '$http', function($location,$http) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.on('click',function() {
+          $http.post('generate/pdf',  scope.datapass, {responseType: 'blob'}).success(function(data) { //create pdf
+            console.log(data)
+            var blob = new Blob([data], {type: 'application/pdf'});
+            var url = URL.createObjectURL(blob);
+            console.log(url)
+            var pom = document.createElement('a');
+            pom.setAttribute('href', url);
+            pom.setAttribute('download', 'out.pdf');
+            pom.click(); 
+          });
+        });
+      }
+    };
   }]);
 
 
@@ -189,8 +210,15 @@ angular.module('ngMCI')
         $scope.datapass = data;
         $rootScope.loadStatus = "complete";
        })
-    }])  
+    }])
  
   .controller('DefaultCtrl',['$rootScope', function($rootScope) {
     $rootScope.loadStatus = "complete";
+  }])
+  
+  .controller('Pdf',['$rootScope', '$scope', function($rootScope, $scope) {
+    $scope.generatePDF = function() {
+      console.log('here')
+    }
   }]);
+  
