@@ -1,9 +1,12 @@
 
 //mci.js
 
-var express       = require('express')
-  , path          = require('path')
-  , routes        = require('./routes')
+var express       = require('express'),
+    passport      = require('passport'),
+    flash         = require('connect-flash'),
+    path          = require('path'),
+    routes        = require('./routes'),
+    user          = require('./user.js');
 
 var app           = express();
   
@@ -38,4 +41,4 @@ app.use(app.router);
 
 require('./routes.js')(app);
 
-app.listen(3000, function(){console.log("\n--- thank you for turning me on. ---\n")});
+app.listen(3000, function(){console.log("\n--- mci.js powered on. ---\n")});

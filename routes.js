@@ -53,14 +53,6 @@ var routes = [
     }],
     accessLevel: accessLevels.user
   },
-  {
-    path: '/delete/pdf/:filename',
-    httpMethod: 'GET',
-    middleware: [function (req, res) {
-      res.end(pdf.remove(req.param('filename')));
-    }],
-    accessLevel: accessLevels.user
-  },
 
   //auth
   {
