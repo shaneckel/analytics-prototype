@@ -41,4 +41,4 @@ app.use(app.router);
 
 require('./routes.js')(app);
 
-app.listen(3000, function(){console.log("\n--- mci.js powered on. ---\n")});
+app.listen(3000, function(){ console.log("\n--- mci.js powered on. ---\n") });
