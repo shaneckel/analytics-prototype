@@ -137,11 +137,9 @@ angular.module('ngMCI')
       link: function(scope, element, attrs) {
         element.on('click',function() {
           $http.post('generate/pdf',  scope.datapass, {responseType: 'blob'}).success(function(data) { //create pdf
-            console.log(data)
-            var blob = new Blob([data], {type: 'application/pdf'});
-            var url = URL.createObjectURL(blob);
-            console.log(url)
-            var pom = document.createElement('a');
+            var blob = new Blob([data], {type: 'application/pdf'})
+              , url = URL.createObjectURL(blob)
+              , pom = document.createElement('a')
             pom.setAttribute('href', url);
             pom.setAttribute('download', 'out.pdf');
             pom.click(); 

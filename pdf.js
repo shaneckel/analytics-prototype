@@ -6,7 +6,7 @@ var PDFDocument = require('pdfkit');
 module.exports = {
   create : function(res, req){
     var doc     = new PDFDocument({size: 'LETTER',layout: 'portrait'})
-      , pdfY       = 20
+      , pdfY    = 20
       , objLen  = req.body.length;
 
     doc.image('public/img/logo.png', 500, 700)
