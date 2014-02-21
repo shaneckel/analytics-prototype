@@ -1,7 +1,9 @@
 article.base(class="{{loadStatus}}")
   div.pdf(data-access-level='accessLevels.user')
     button(generate-pdf) Export to PDF
-    
+    button(generate-csv, ng-click="get_csv()", filename="bb_data.csv") Export to CSV     
+    //a(href="#" generate-csv, ng-click="get_csv()", filename="bb_data.csv") Export to CSV     
+
   h1 Client List 
   div(ng-repeat="data in datapass")
     p {{data.clientID}} - {{data.clientName}} 

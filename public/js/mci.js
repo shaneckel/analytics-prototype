@@ -1,7 +1,7 @@
 
 // MCI 
 
-var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
+var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute', 'ngSanitize', 'ngCsv'])
   .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
 
@@ -131,6 +131,25 @@ angular.module('ngMCI')
     };
   }])
   
+  .directive('generateCsv', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attr) {
+        //element.on('click', function () { alert('fuck yer face'); });
+
+        scope.get_csv = function () {  
+          //console.log(scope.datapass);
+          return scope.datapass;      
+        };
+
+      },
+
+      template: '<a href="#" ng-csv="get_csv()" filename="bb_data.csv"> Export to CSV </a>'
+
+
+    }
+  })
+
   .directive('generatePdf', ['$location', '$http', function($location,$http) {
     return {
       restrict: 'A',
