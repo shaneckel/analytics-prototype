@@ -21,7 +21,6 @@ html(lang='en', ng-app="ngMCI")
         div.fixed
           h1 MCI
 
-          //Grow this out of a loop. 
           li(data-access-level='accessLevels.user', active-nav)
             a(href='/') Current Index
           li(data-access-level='accessLevels.user', active-nav)
@@ -32,15 +31,12 @@ html(lang='en', ng-app="ngMCI")
             a(href='/android') Android
           li(data-access-level='accessLevels.user', active-nav)
             a(href='/ios') Ios
-
           li.logout(data-access-level='accessLevels.user', active-nav)
             h2(ng-if="user.username") Welcome {{user.username}}
             h3(ng-if="user.email") {{user.email}}
             a(data-ng-click="logout()") Logout
 
-
       section.content(ng-view )
-    
 
     script(src='/js/util/angular.js')
     script(src='/js/util/angular-route.js')
@@ -48,9 +44,12 @@ html(lang='en', ng-app="ngMCI")
     script(src='/js/util/angular-sanitize.js')
     script(src='/js/util/ng-csv.min.js')
     script(src='/js/routingConfig.js')
+      
     script(src='/js/mci.js')
+    script(src='/js/directives.js')
+    script(src='/js/datafactories.js')
+    script(src='/js/controllers.js')
 
-    //templ
     script(type="text/ng-template", id="404")
       include templ/404    
     script(type="text/ng-template", id="login")
