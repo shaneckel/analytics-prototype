@@ -1,7 +1,7 @@
 
 // MCI 
 
-var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute'])
+var ngMCI = angular.module("ngMCI", ['ngCookies', 'ngRoute', 'ngSanitize', 'ngCsv'])
   .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     var access = routingConfig.accessLevels;
 
@@ -129,6 +129,43 @@ angular.module('ngMCI')
         });
       }
     };
+  }])
+  
+  .directive('generateCsv', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attr) {
+        //element.on('click', function () { alert('fuck yer face'); });
+
+        scope.get_csv = function () {  
+          //console.log(scope.datapass);
+          return scope.datapass;      
+        };
+
+      },
+
+      template: '<a href="#" ng-csv="get_csv()" filename="bb_data.csv"> Export to CSV </a>'
+
+
+    }
+  })
+
+  .directive('generatePdf', ['$location', '$http', function($location,$http) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        element.on('click',function() {
+          $http.post('generate/pdf',  scope.datapass, {responseType: 'blob'}).success(function(data) { //create pdf
+            var blob = new Blob([data], {type: 'application/pdf'})
+              , url = URL.createObjectURL(blob)
+              , pom = document.createElement('a')
+            pom.setAttribute('href', url);
+            pom.setAttribute('download', 'out.pdf');
+            pom.click(); 
+          });
+        });
+      }
+    };
   }]);
 
 
@@ -210,4 +247,11 @@ angular.module('ngMCI')
 
   .controller('DefaultCtrl',['$rootScope','$scope', function($rootScope, $scope) {
     $rootScope.loadStatus = "complete";
+  }])
+  
+  .controller('Pdf',['$rootScope', '$scope', function($rootScope, $scope) {
+    $scope.generatePDF = function() {
+      console.log('here')
+    }
   }]);
+  

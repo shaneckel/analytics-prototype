@@ -36,7 +36,8 @@ html(lang='en', ng-app="ngMCI")
           li.logout(data-access-level='accessLevels.user', active-nav)
             h2(ng-if="user.username") Welcome {{user.username}}
             h3(ng-if="user.email") {{user.email}}
-            a(data-ng-click="logout()") Logout 
+            a(data-ng-click="logout()") Logout
+
 
       section.content(ng-view )
     
@@ -44,6 +45,8 @@ html(lang='en', ng-app="ngMCI")
     script(src='/js/util/angular.js')
     script(src='/js/util/angular-route.js')
     script(src='/js/util/angular-cookies.js')
+    script(src='/js/util/angular-sanitize.js')
+    script(src='/js/util/ng-csv.min.js')
     script(src='/js/routingConfig.js')
     script(src='/js/mci.js')
 

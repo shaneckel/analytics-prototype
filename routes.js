@@ -7,8 +7,9 @@ var _             = require('underscore'),
     flash         = require('connect-flash'),
     user          = require('./user.js'),
     userRoles     = require('./public/js/routingConfig').userRoles,
-    accessLevels  = require('./public/js/routingConfig').accessLevels;
-    db            = require('./db');
+    accessLevels  = require('./public/js/routingConfig').accessLevels,
+    db            = require('./db'),
+    pdf           = require('./pdf');
 
 var routes = [
   
@@ -37,6 +38,18 @@ var routes = [
           res.end(JSON.stringify(rows)); 
         }
       });
+    }],
+    accessLevel: accessLevels.user
+  },
+  
+  //pdf
+  {
+    path: '/generate/pdf',
+    httpMethod: 'POST',
+    middleware: [function (req, res) {
+      res.set('Last-Modified', 'today');
+      res.writeHead(200, {'Content-Type': 'application/pdf; UTF-8', 'Content-Disposition': 'attachment; filename="out.pdf"'});
+      pdf.create(res,req);
     }],
     accessLevel: accessLevels.user
   },
@@ -95,6 +108,10 @@ module.exports = function(app) {
     var args = _.flatten([route.path, route.middleware]);
     if(route.httpMethod.toUpperCase() === 'GET'){
       app.get.apply(app, args);
+    } 
+    
+    if(route.httpMethod.toUpperCase() === 'POST'){
+      app.post.apply(app, args);
     }
   });
 }

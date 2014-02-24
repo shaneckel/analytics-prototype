@@ -5,8 +5,8 @@ var _               = require('underscore'),
     mysql           = require('mysql'),
     connect         = mysql.createConnection({
       host          : 'analytics.c6wqovrzi8ft.us-east-1.rds.amazonaws.com',
-      user          : 'analytics',
-      password      : 'rPTRGQPjwYBVCePb',
+      user          : 'analytics_ro',
+      password      : 'YaSx8s632E3i1dy',
       database      : 'analytics'
     });
 
