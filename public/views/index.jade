@@ -17,20 +17,14 @@ html(lang='en', ng-app="ngMCI")
     div.load(class="{{loadStatus}}")
 
     main
+
       nav.main-nav(data-ng-controller="NavCtrl", data-access-level='accessLevels.user')
         div.fixed
           h1 MCI
-
           li(data-access-level='accessLevels.user', active-nav)
-            a(href='/') Current Index
+            a(href='/client') Client
           li(data-access-level='accessLevels.user', active-nav)
-            a(href='/node') Node
-          li(data-access-level='accessLevels.user', active-nav)
-            a(href='/device') Device
-          li(data-access-level='accessLevels.user', active-nav)
-            a(href='/android') Android
-          li(data-access-level='accessLevels.user', active-nav)
-            a(href='/ios') Ios
+            a(href='/hotlist') Hot List
           li.logout(data-access-level='accessLevels.user', active-nav)
             h2(ng-if="user.username") Welcome {{user.username}}
             h3(ng-if="user.email") {{user.email}}
@@ -54,13 +48,9 @@ html(lang='en', ng-app="ngMCI")
       include templ/404    
     script(type="text/ng-template", id="login")
       include templ/login
-    script(type="text/ng-template", id="home")
-      include templ/home
-    script(type="text/ng-template", id="android")
-      include templ/android
-    script(type="text/ng-template", id="node")
-      include templ/node
-    script(type="text/ng-template", id="ios")
-      include templ/ios    
-    script(type="text/ng-template", id="device")
-      include templ/device
+    script(type="text/ng-template", id="hotlist")
+      include templ/hotlist
+    script(type="text/ng-template", id="client")
+      include templ/client
+    script(type="text/ng-template", id="clientlist")
+      include templ/clientlist

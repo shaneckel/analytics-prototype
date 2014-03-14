@@ -106,6 +106,7 @@ module.exports = function(app) {
   _.each(routes, function(route) {
     route.middleware.unshift(ensureAuthorized);
     var args = _.flatten([route.path, route.middleware]);
+    
     if(route.httpMethod.toUpperCase() === 'GET'){
       app.get.apply(app, args);
     } 

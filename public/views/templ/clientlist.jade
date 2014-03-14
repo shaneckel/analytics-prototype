@@ -1,0 +1,8 @@
+article.base(class="{{loadStatus}}")
+  div.pdf(data-access-level='accessLevels.user')
+
+  h1 Client List 
+  div(ng-repeat="data in datapass")
+    p.clientlist
+     a(href="/#/clientlist/{{data.clientID}}") {{data.clientID}} - {{data.clientName}} 
+  

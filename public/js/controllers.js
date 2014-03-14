@@ -19,13 +19,12 @@ angular.module('ngMCI')
   .controller('LoginCtrl', ['$rootScope', '$scope', '$location', '$window', 'Auth', function($rootScope, $scope, $location, $window, Auth) {
     $rootScope.loadStatus = "complete";
     if(Auth.isLoggedIn()) $location.path('/');
-
     $scope.loginOauth = function(provider) {
       $window.location.href = '/auth/' + provider;
     };
   }])
 
-  .controller('HomeCtrl', ['$rootScope', '$scope', '$http',
+  .controller('ClientListCtrl', ['$rootScope', '$scope', '$http',
     function($rootScope, $scope, $http) {
       $rootScope.loadStatus = "working";
       $http.get('/api/clientInfo').success(function(data) {
@@ -36,6 +35,15 @@ angular.module('ngMCI')
 
   .controller('DefaultCtrl',['$rootScope','$scope', function($rootScope, $scope) {
     $rootScope.loadStatus = "complete";
+  }])
+  
+  .controller('ClientCtrl',['$rootScope','$scope','$routeParams', function($rootScope, $scope, $routeParams) {
+    console.log("fics");
+
+    //$scope.page = "asdsad";
+    $scope.page = routeParams.id;
+    $rootScope.loadStatus = "complete";
+
   }])
   
   .controller('Pdf',['$rootScope', '$scope', function($rootScope, $scope) {

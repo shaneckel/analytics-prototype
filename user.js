@@ -53,7 +53,7 @@ module.exports = {
         if(rows.length < 1){
           console.log("--- failed auth");
           done(null, false, { 
-            message: "I'm sorry but "+ profile.emails[0].value  + " isn't on the list." 
+            message: "I'm sorry but " + profile.emails[0].value + " isn't on the list." 
           });
         }else{
           console.log("--- user " + profile.emails[0].value + " is valid");
